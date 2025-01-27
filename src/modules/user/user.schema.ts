@@ -17,9 +17,9 @@ export const UserSchema = z.object({
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
     .regex(/[0-9]/, 'Password must contain at least one digit'),
   role: UserRole.default('USER'),
+  isDeleted: z.boolean().default(false),
   createdAt: z.string().datetime({ offset: true }).optional(),
   updatedAt: z.string().datetime({ offset: true }).optional(),
-  isDeleted: z.boolean().default(false),
 });
 
 export const CreateUserSchema = UserSchema.omit({
