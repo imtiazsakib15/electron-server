@@ -51,9 +51,23 @@ const updateByIdFromDB = async (id: string, payload: UpdateProduct) => {
   return result;
 };
 
+const deleteByIdFromDB = async (id: string) => {
+  const result = await Product.findByIdAndUpdate(
+    id,
+    { isDeleted: true },
+    { new: true },
+  );
+
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
+  }
+  return result;
+};
+
 export const productService = {
   createIntoDB,
   getAllFromDB,
   getByIdFromDB,
   updateByIdFromDB,
+  deleteByIdFromDB,
 };
