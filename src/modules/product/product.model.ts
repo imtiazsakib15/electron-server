@@ -14,4 +14,19 @@ const productSchema = new mongoose.Schema<TProduct>(
   { timestamps: true, versionKey: false },
 );
 
+productSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+productSchema.pre('findOne', function (next) {
+  this.findOne({ isDeleted: { $ne: true } });
+  next();
+});
+
+productSchema.pre('findOneAndUpdate', function (next) {
+  this.findOneAndUpdate({ isDeleted: { $ne: true } });
+  next();
+});
+
 export const Product = mongoose.model<TProduct>('Product', productSchema);
