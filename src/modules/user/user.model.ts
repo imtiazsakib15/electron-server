@@ -12,4 +12,4 @@ const UserSchema = new mongoose.Schema<TUser>(
   { timestamps: true, versionKey: false },
 );
 
-export const UserModel = mongoose.model<TUser>('User', UserSchema);
+export const User = mongoose.model<TUser>('User', UserSchema);
