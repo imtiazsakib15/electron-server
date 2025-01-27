@@ -30,7 +30,17 @@ const getAllFromDB = async (query: Record<string, unknown>) => {
   return result;
 };
 
+const getByIdFromDB = async (id: string) => {
+  const result = await Product.findById(id);
+
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
+  }
+  return result;
+};
+
 export const productService = {
   createIntoDB,
   getAllFromDB,
+  getByIdFromDB,
 };
