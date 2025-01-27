@@ -1,11 +1,11 @@
 import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
 import { Product } from './product.model';
-import { TProduct } from './product.type';
+import { CreateProduct, UpdateProduct } from './product.type';
 import QueryBuilder from '../../builder/QueryBuilder';
 import { SEARCHABLE_FIELDS } from './product.constant';
 
-const createIntoDB = async (payload: TProduct) => {
+const createIntoDB = async (payload: CreateProduct) => {
   const result = await Product.create(payload);
 
   if (!result) {
@@ -39,8 +39,21 @@ const getByIdFromDB = async (id: string) => {
   return result;
 };
 
+const updateByIdFromDB = async (id: string, payload: UpdateProduct) => {
+  const result = await Product.findByIdAndUpdate(id, payload, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
+  }
+  return result;
+};
+
 export const productService = {
   createIntoDB,
   getAllFromDB,
   getByIdFromDB,
+  updateByIdFromDB,
 };

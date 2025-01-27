@@ -1,18 +1,24 @@
 import { Router } from 'express';
 import { validateRequest } from '../../middlewares/validateRequest';
-import { ProductSchema } from './product.schema';
+import { CreateProductSchema, UpdateProductSchema } from './product.schema';
 import { productController } from './product.controller';
 
 const router = Router();
 
 router.post(
   '/create',
-  validateRequest(ProductSchema),
+  validateRequest(CreateProductSchema),
   productController.create,
 );
 
 router.get('/', productController.getAll);
 
 router.get('/:id', productController.getById);
+
+router.put(
+  '/:id',
+  validateRequest(UpdateProductSchema),
+  productController.updateById,
+);
 
 export const productRoutes = router;
