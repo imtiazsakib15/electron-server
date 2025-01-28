@@ -1,7 +1,9 @@
 import mongoose from 'mongoose';
 import { TUser } from './user.type';
+import bcrypt from 'bcrypt';
+import config from '../../config';
 
-const UserSchema = new mongoose.Schema<TUser>(
+const userSchema = new mongoose.Schema<TUser>(
   {
     name: { type: String, required: true, trim: true, maxlength: 100 },
     email: { type: String, required: true, unique: true },
@@ -12,4 +14,16 @@ const UserSchema = new mongoose.Schema<TUser>(
   { timestamps: true, versionKey: false },
 );
 
-export const User = mongoose.model<TUser>('User', UserSchema);
+userSchema.pre('save', async function (next) {
+  this.password = await bcrypt.hash(
+    this.password,
+    Number(config.BCRYPT_SALT_ROUNDS),
+  );
+  next();
+});
+userSchema.post('save', function (doc, next) {
+  doc.password = '';
+  next();
+});
+
+export const User = mongoose.model<TUser>('User', userSchema);
