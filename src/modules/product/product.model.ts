@@ -7,7 +7,11 @@ const productSchema = new mongoose.Schema<TProduct>(
     description: { type: String, required: true },
     price: { type: Number, required: true, min: 0 },
     stock: { type: Number, required: true, min: 0 },
-    category: { type: String, required: true },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
+      required: true,
+    },
     image: { type: String, required: true },
     isDeleted: { type: Boolean, default: false },
   },
@@ -25,7 +29,7 @@ productSchema.pre('findOne', function (next) {
 });
 
 productSchema.pre('findOneAndUpdate', function (next) {
-  this.findOneAndUpdate({ isDeleted: { $ne: true } });
+  this.findOne({ isDeleted: { $ne: true } });
   next();
 });
 
