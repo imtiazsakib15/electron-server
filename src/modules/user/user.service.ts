@@ -9,8 +9,19 @@ const getAllFromDB = async () => {
 };
 
 const updateByIdFromDB = async (id: string, payload: UpdateUser) => {
-  console.log(payload);
   const result = await User.findByIdAndUpdate(id, payload, { new: true });
+
+  if (!result) throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+
+  return result;
+};
+
+const deleteByIdFromDB = async (id: string) => {
+  const result = await User.findByIdAndUpdate(
+    id,
+    { isDeleted: true },
+    { new: true },
+  );
 
   if (!result) throw new AppError(httpStatus.NOT_FOUND, 'User not found');
 
@@ -20,4 +31,5 @@ const updateByIdFromDB = async (id: string, payload: UpdateUser) => {
 export const userService = {
   getAllFromDB,
   updateByIdFromDB,
+  deleteByIdFromDB,
 };

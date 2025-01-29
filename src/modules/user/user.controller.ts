@@ -30,4 +30,15 @@ const updateById = catchAsync(async (req, res) => {
   });
 });
 
-export const userController = { getAll, updateById };
+const deleteById = catchAsync(async (req, res) => {
+  const result = await userService.deleteByIdFromDB(req.params.id);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'User deleted successfully',
+    data: result,
+  });
+});
+
+export const userController = { getAll, updateById, deleteById };
