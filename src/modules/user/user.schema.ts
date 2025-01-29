@@ -29,6 +29,8 @@ export const CreateUserSchema = UserSchema.omit({
 });
 export const UpdateUserSchema = UserSchema.partial().omit({
   _id: true,
+  email: true,
+  password: true,
   createdAt: true,
   updatedAt: true,
 });

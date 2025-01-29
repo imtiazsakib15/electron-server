@@ -9,9 +9,25 @@ const getAll = catchAsync(async (req, res) => {
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'User retrieved successfully',
+    message: 'Users retrieved successfully',
     data: result,
   });
 });
 
-export const userController = { getAll };
+const updateById = catchAsync(async (req, res) => {
+  const { name, role, isDeleted } = req.body;
+  const result = await userService.updateByIdFromDB(req.params.id, {
+    name,
+    role,
+    isDeleted,
+  });
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'User updated successfully',
+    data: result,
+  });
+});
+
+export const userController = { getAll, updateById };
